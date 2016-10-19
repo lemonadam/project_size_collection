@@ -59,58 +59,8 @@ class Tools(object):
 			message_type = 'Unkown'
 		return message_type
 
-	def sendMsgToDingDing(self, msg, channelid):
-		api = "https://infosys.byted.org/ratak/dingtalk/channels/"+str(channelid)+"/messages/"
-		text = msg
-		import base64
-		username = "20"
-		password = "75331FDAAB5C4C18A36E005F3142FE2A"
-		bodydata = {'channel_id':channelid,'type':'text','content':{'content': text}}
-		# print bodydata
-		request = urllib2.Request(api)
-		request.add_header("Content-Type", "application/json")
-		base64string = base64.encodestring('%s:%s' % (username, password)).replace('\n', '')
-		request.add_header("Authorization", "Basic %s" % base64string)
-		result = urllib2.urlopen(request, json.dumps(bodydata))
-		ret = json.load(result)
-		# print ret
-
-
-	def assert_equal(self, real_data, expect):
-		if real_data != expect:
-			return False
-		return True
-
-	def get(self, url):
-		return urllib2.urlopen(url)
-
-	def getErrmsgFromConsoleText(self, build_url):
-		"""
-    	console_text_url sample: http://ci.byted.org/job/TT_iOS_EverPhoto_Release/161/
-    	"""
-		print "getErrmsgFromConsoleText", build_url
-		if len(build_url) == 0:
-			return ""
-		ret = ""
-		text = self.get("%s/consoleText" % build_url).read()
-		lines = text.split("\n")
-		for line in lines:
-			if line.lower().find("finished:") != -1:
-				ret += line
-		ret = ret.replace("\"", "'").replace("“", "'")
-		return ret if len(ret) > 0 else "没找到原始错误日志， 详细参看%s/consoleText" % build_url
-
-
-	def getCIJobJson(self, build_url):
-		"""
-		ci_job_url sample: http://ci.byted.org/view/live/job/live_iOS_inhouse_dailybuild_backup/36/
-		"""
-		print "getCIJobJson", build_url
-		if len(build_url) == 0:
-			return ""
-		ret = ""
-		text = self.get("%s/api/json" % build_url).read()
-		return json.loads(text)
+	
+#需要隐藏的方法
 
 
 if __name__ == "__main__":
